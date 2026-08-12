@@ -1,0 +1,19 @@
+#!/bin/bash
+# Pre-commit hook: 运行类型检查和 lint
+# 由 setup-git-hooks.mjs 在 npm install 时自动注册
+
+set -e
+
+echo "[pre-commit] Running type check..."
+npx tsc --noEmit 2>/dev/null || {
+  echo "[pre-commit] TypeScript check failed. Please fix type errors before committing."
+  exit 1
+}
+
+echo "[pre-commit] Running lint..."
+npx eslint . --max-warnings=0 2>/dev/null || {
+  echo "[pre-commit] Lint check failed. Please fix lint errors before committing."
+  exit 1
+}
+
+echo "[pre-commit] All checks passed."
